@@ -3,6 +3,7 @@ package com.SwissKnife;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -23,26 +24,25 @@ public class Utils {
 		this.destination = destination;
 	}
 
-	
 	public void secureDelete(File file) throws IOException {
-	    if (file.exists()) {
-	        long length = file.length();
-	        SecureRandom random = new SecureRandom();
-	        RandomAccessFile raf = new RandomAccessFile(file, "rws");
-	        raf.seek(0);
-	        raf.getFilePointer();
-	        byte[] data = new byte[64];
-	        int pos = 0;
-	        while (pos < length) {
-	            random.nextBytes(data);
-	            raf.write(data);
-	            pos += data.length;
-	        }
-	        raf.close();
-	        file.delete();
-	    }
+		if (file.exists()) {
+			long length = file.length();
+			SecureRandom random = new SecureRandom();
+			RandomAccessFile raf = new RandomAccessFile(file, "rws");
+			raf.seek(0);
+			raf.getFilePointer();
+			byte[] data = new byte[64];
+			int pos = 0;
+			while (pos < length) {
+				random.nextBytes(data);
+				raf.write(data);
+				pos += data.length;
+			}
+			raf.close();
+			file.delete();
+		}
 	}
-	
+
 	@SuppressWarnings("unused")
 	public void delete(File file) throws IOException {
 		// deleter
@@ -60,6 +60,16 @@ public class Utils {
 		if (!file.delete()) {
 			throw new IOException();
 		}
+	}
+
+	public void MyFileWalker(String source) throws IOException {
+		this.source = source;
+		Files.find(Paths.get(source),
+		           Integer.MAX_VALUE,
+		           (path, fileAttr) -> fileAttr.isRegularFile())
+		        .forEach(System.out::println);
+		
+		
 	}
 
 	public void FolderMoveR(String source, String destination) throws IOException {
@@ -98,7 +108,7 @@ public class Utils {
 	public void setDestination(String destination) {
 		this.destination = destination;
 	}
-	
+
 	// identify filetypes
 	public String identifyFileTypeUsingFilesProbeContentType(final String fileName) {
 		String fileType = "Undetermined";

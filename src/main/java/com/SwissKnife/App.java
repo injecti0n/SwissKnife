@@ -2,8 +2,6 @@ package com.SwissKnife;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.NoSuchFileException;
-
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -18,7 +16,14 @@ public class App {
 		String dst = "/home/intec/Desktop/SwissKnifeTrash1/";
 		Utils util = new Utils(src, dst);
 		File file = new File(src);
+
 		System.out.println(util.identifyFileTypeUsingFilesProbeContentType("photo.jpg"));
+		try {
+			util.MyFileWalker(src);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		Options options = new Options();
 
@@ -56,14 +61,14 @@ public class App {
 
 		CommandLineParser parser = new DefaultParser();
 		HelpFormatter formatter = new HelpFormatter();
-		
+
 		try {
 			CommandLine cmd = parser.parse(options, args);
 			if (cmd.hasOption("i")) {
-			    System.out.println("STRING: METHOD_METHOD");
-			  } else if (cmd.hasOption("m")) {
-			    System.out.println("STRING: METHOD_METHOD");
-			  }
+				System.out.println("STRING: METHOD_METHOD");
+			} else if (cmd.hasOption("m")) {
+				System.out.println("STRING: METHOD_METHOD");
+			}
 			String inputFilePath = cmd.getOptionValue("input");
 			String outputFilePath = cmd.getOptionValue("output");
 			String Create = cmd.getOptionValue("create");
@@ -86,26 +91,16 @@ public class App {
 
 			System.exit(1);
 		}
-		
-		/*
 
-		try {
-			util.FolderMoveR(src, dst);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		try {
-			util.delete(file);
-			System.out.println("Directory has been deleted recursively !");
-		} catch (IOException e) {
-			System.out.println("Problem occurs when deleting the directory : " + src);
-			e.printStackTrace();
-		}
-		try {
-			util.secureDelete(file);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		*/
+		/*
+		 * 
+		 * try { util.FolderMoveR(src, dst); } catch (IOException e) {
+		 * e.printStackTrace(); } try { util.delete(file);
+		 * System.out.println("Directory has been deleted recursively !"); } catch
+		 * (IOException e) {
+		 * System.out.println("Problem occurs when deleting the directory : " + src);
+		 * e.printStackTrace(); } try { util.secureDelete(file); } catch (IOException e)
+		 * { e.printStackTrace(); }
+		 */
 	}
 }
